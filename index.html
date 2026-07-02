@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+
+  <title>프리미엄 멤버십 카드 생성기</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Playfair+Display:ital,wght@0,600;0,800;1,600&family=Alex+Brush&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="app">
+  <div class="app-header">
+    <div class="eyebrow">The Black Edition</div>
+    <h1>나만의 VIP 멤버십 카드</h1>
+    <p>프로필 사진을 마우스로 드래그하여 위치를 맞춰보세요.<br>로고와 QR코드는 assets 폴더의 이미지를 자동으로 불러옵니다.</p>
+  </div>
+
+  <div class="layout">
+    <!-- ===================== CONTROL PANEL ===================== -->
+    <div class="panel">
+      <!-- 1. 회원 정보 -->
+      <div class="panel-section">
+        <h2><span class="num">1</span>회원 정보</h2>
+        <div class="field-row">
+          <label class="field-label" for="coordiCode">담당 코디 번호</label>
+          <input class="text-input" id="coordiCode" type="text" value="10005" maxlength="20">
+        </div>
+        <div class="field-row">
+          <label class="field-label" for="memberId">회원 ID</label>
+          <input class="text-input" id="memberId" type="text" value="KIMCG 12345" maxlength="30">
+        </div>
+      </div>
+
+      <!-- 2. 프로필 사진 -->
+      <div class="panel-section">
+        <h2><span class="num">2</span>프로필 사진 (드래그 조절)</h2>
+        <div class="upload-box" id="photoBox">
+          <input type="file" id="photoInput" accept="image/*">
+          <div class="upload-thumb" id="photoThumb">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="3.5"/><path d="M4 20c0-4 3.5-6.5 8-6.5s8 2.5 8 6.5"/></svg>
+          </div>
+          <div class="upload-text">
+            <div class="t1">인물 사진 업로드</div>
+            <div class="t2" id="photoFileName">선택된 파일 없음</div>
+          </div>
+          <button class="clear-btn" id="photoClear" type="button">삭제</button>
+        </div>
+        <div class="range-control hidden" id="photoScaleControl">
+          <div class="control-row">
+            <label for="photoScale">사진 크기</label>
+            <input type="range" id="photoScale" min="0.1" max="4.0" step="0.05" value="1">
+            <span class="scale-val" id="photoScaleVal">100%</span>
+          </div>
+          <div class="control-row pos-row">
+            <label>사진 위치</label>
+            <span class="pos-val" id="photoPosVal">X: 0, Y: 0</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. 카드 테마 -->
+      <div class="panel-section">
+        <h2><span class="num">3</span>카드 테마 색상</h2>
+        <div class="color-row" id="colorRow">
+          <div class="swatch active" data-c1="#1f1f22" data-c2="#0a0a0c" style="background:linear-gradient(135deg,#1f1f22,#0a0a0c)"></div>
+          <div class="swatch" data-c1="#ff6f74" data-c2="#e85a63" style="background:linear-gradient(135deg,#ff6f74,#e85a63)"></div>
+          <div class="swatch" data-c1="#3b3759" data-c2="#201c36" style="background:linear-gradient(135deg,#3b3759,#201c36)"></div>
+          <div class="swatch" data-c1="#877151" data-c2="#5c4a32" style="background:linear-gradient(135deg,#877151,#5c4a32)"></div>
+          <div class="swatch" data-c1="#1c3a35" data-c2="#0b1c19" style="background:linear-gradient(135deg,#1c3a35,#0b1c19)"></div>
+        </div>
+      </div>
+
+      <button class="download-btn" id="downloadBtn" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v13m0 0l-4.5-4.5M12 16l4.5-4.5M4 20h16"/></svg>
+        고해상도 실물 렌더링 저장
+      </button>
+    </div>
+
+    <!-- ===================== CARD PREVIEW ===================== -->
+    <div class="preview-wrap">
+      <div class="stage" id="stage">
+        <div class="stage-scaler" id="stageScaler">
+          <div id="card">
+            <div class="card-texture"></div>
+            <div class="card-shine"></div>
+
+            <!-- 좌측 상단: IC 칩 & 와이파이 -->
+            <div class="card-chip-group">
+              <div class="ic-chip">
+                <div class="chip-line v1"></div>
+                <div class="chip-line v2"></div>
+                <div class="chip-line h1"></div>
+                <div class="chip-inner"></div>
+              </div>
+              <svg class="contactless" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                <path d="M4 14.5a10.5 10.5 0 0 1 0-5m4.5 7a7 7 0 0 1 0-9m4.5 11a3.5 3.5 0 0 1 0-13m4.5 15a0 0 0 0 1 0-17"/>
+              </svg>
+            </div>
+
+            <!-- 우측 상단: 슬로건 & 브랜드 타이틀 -->
+            <div class="card-brand-top">
+              <div class="promo">설레이는 첫 만남 최고의 인연을 선사합니다</div>
+              <div class="brand">MEMBER<br>SHIP<span class="script">for you</span></div>
+            </div>
+
+            <!-- 카드 정중앙: assets/logo.png 자동 로드 -->
+            <div class="card-title-wrap">
+              <div id="cardLogo">
+                <img src="assets/logo.png" alt="로고" class="card-logo-img"
+                     onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                <div class="card-title" style="display:none;">banada love</div>
+              </div>
+            </div>
+
+            <!-- 하단 정보 영역 -->
+            <div class="card-bottom">
+
+              <!-- 하단 좌측: 사진 및 회원 정보 -->
+              <div class="card-bottom-left">
+                <div class="card-photo-wrap">
+                  <div class="card-photo" id="cardPhoto">
+                    <svg class="placeholder-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.5 3.6-7.5 8-7.5s8 3 8 7.5"/></svg>
+                  </div>
+                  <div class="vip-badge">VIP</div>
+                </div>
+
+                <div class="card-user-info">
+                  <div class="item">
+                    <span class="label">COORD</span>
+                    <span class="value emboss-text" id="outCoordi">10005</span>
+                  </div>
+                  <div class="item">
+                    <span class="label">MEMBER</span>
+                    <span class="value emboss-text" id="outMemberId">KIMCG 12345</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 하단 우측: assets/qr-code.png 자동 로드 -->
+              <div class="card-bottom-right">
+                <div class="card-qr-wrap" id="cardQr">
+                  <img src="assets/qr-code.png" alt="QR 코드"
+                       onerror="this.style.display='none';">
+                </div>
+                <div class="card-url">www.banadalove.com</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="zoom-controls">
+        <button id="zoomOut" type="button">−</button>
+        <span id="zoomLabel">100%</span>
+        <button id="zoomIn" type="button">+</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

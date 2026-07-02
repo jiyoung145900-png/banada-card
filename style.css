@@ -1,0 +1,167 @@
+:root {
+  --card-w: 856px;
+  --card-h: 540px;
+  --bg-color-1: #1f1f22;
+  --bg-color-2: #0a0a0c;
+  --bg-app: #f2efe9;
+  --panel: #ffffff;
+  --panel-border: #e3ddd7;
+  --text-dark: #1f1a1a;
+  --text-mute: #8a7d76;
+  --accent: #b3915f;
+
+  /* 로고 크기/위치 조절용 — 이 값들만 바꾸면 됩니다 */
+  --logo-scale: 2;
+  --logo-x: 0px;
+  --logo-y: 0px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: var(--bg-app); font-family: 'Noto Sans KR', sans-serif; color: var(--text-dark); }
+
+.app { min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 40px 20px 80px; gap: 30px; }
+.app-header { text-align: center; max-width: 640px; }
+.app-header .eyebrow { font-size: 13px; letter-spacing: 4px; color: var(--accent); font-weight: 800; text-transform: uppercase; }
+.app-header h1 { font-family: 'Playfair Display', serif; font-size: 36px; margin: 8px 0 6px; font-weight: 800; }
+.app-header p { color: var(--text-mute); font-size: 14px; line-height: 1.6; }
+
+.layout { width: 100%; max-width: 1240px; display: grid; grid-template-columns: minmax(320px, 400px) 1fr; gap: 40px; align-items: start; }
+
+/* ---------- Control Panel ---------- */
+.panel { background: var(--panel); border: 1px solid var(--panel-border); border-radius: 20px; padding: 28px 26px 32px; box-shadow: 0 16px 40px -20px rgba(0,0,0,0.1); }
+.panel-section { padding: 20px 0; border-bottom: 1px solid #f0eae4; }
+.panel-section:first-child { padding-top: 0; }
+.panel-section:last-child { border-bottom: none; padding-bottom: 0; }
+.panel-section h2 { font-size: 14px; font-weight: 700; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+.panel-section h2 .num { width: 22px; height: 22px; border-radius: 50%; background: var(--text-dark); color: #fff; font-size: 12px; display: flex; align-items: center; justify-content: center; }
+label.field-label { display: block; font-size: 12px; font-weight: 600; color: var(--text-mute); margin-bottom: 8px; }
+
+.text-input { width: 100%; padding: 12px 14px; border: 1.5px solid #e3ddd7; border-radius: 10px; font-size: 14px; font-family: inherit; font-weight: 600; color: var(--text-dark); background: #faf8f6; transition: all .2s; }
+.text-input:focus { outline: none; border-color: var(--accent); background: #fff; }
+.field-row { margin-bottom: 16px; }
+
+.upload-box { position: relative; border: 1.5px dashed #ccc4bc; border-radius: 12px; background: #faf8f6; padding: 16px; display: flex; align-items: center; gap: 12px; cursor: pointer; transition: all .2s; }
+.upload-box:hover { border-color: var(--accent); background: #fff; }
+.upload-box input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; z-index: 3; }
+.upload-thumb { width: 48px; height: 48px; border-radius: 10px; background: #eee8e2; display: flex; align-items: center; justify-content: center; overflow: hidden; flex-shrink: 0; }
+.upload-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.upload-thumb svg { width: 22px; height: 22px; color: #a69b92; }
+.upload-text { flex: 1; min-width: 0; }
+.upload-text .t1 { font-size: 13.5px; font-weight: 600; }
+.upload-text .t2 { font-size: 11px; color: var(--text-mute); margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.clear-btn { border: none; background: #eae4de; color: var(--text-dark); font-size: 11px; font-weight: 600; padding: 6px 12px; border-radius: 8px; cursor: pointer; position: relative; z-index: 4; }
+.clear-btn:hover { background: #d6cfc7; }
+
+.range-control { margin-top: 14px; display: flex; flex-direction: column; gap: 10px; background: #f6f3ef; padding: 14px 16px; border-radius: 8px; }
+.range-control.hidden { display: none; }
+.control-row { display: flex; align-items: center; gap: 12px; width: 100%; }
+.control-row label { font-size: 12px; font-weight: 600; color: var(--text-dark); white-space: nowrap; }
+.control-row input[type=range] { flex: 1; accent-color: var(--text-dark); cursor: pointer; }
+.control-row .scale-val { font-size: 12px; font-weight: 700; color: var(--accent); width: 45px; text-align: right; }
+
+.pos-row { justify-content: space-between; border-top: 1px solid #eae4de; padding-top: 8px; margin-top: 2px; }
+.pos-val { font-size: 12px; font-weight: 700; color: #4a423d; font-family: monospace; letter-spacing: 0.5px; }
+
+.color-row { display: flex; gap: 12px; margin-top: 6px; }
+.swatch { width: 32px; height: 32px; border-radius: 50%; cursor: pointer; border: 2px solid #fff; box-shadow: 0 0 0 1px #d6cfc7; }
+.swatch.active { box-shadow: 0 0 0 2.5px var(--text-dark); }
+
+.download-btn { width: 100%; margin-top: 24px; padding: 16px; border: none; border-radius: 12px; background: var(--text-dark); color: #fff; font-size: 15px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all .2s; }
+.download-btn:hover { background: #000; transform: translateY(-2px); box-shadow: 0 10px 20px -8px rgba(0,0,0,0.4); }
+.download-btn svg { width: 18px; height: 18px; }
+.download-btn.loading { opacity: 0.6; pointer-events: none; }
+
+/* ---------- VIP Card Preview ---------- */
+.preview-wrap { display: flex; flex-direction: column; align-items: center; gap: 20px; position: sticky; top: 40px; }
+.stage { width: 100%; max-width: var(--card-w); aspect-ratio: 856 / 540; perspective: 1500px; }
+.stage-scaler { width: 100%; height: 100%; transform: scale(var(--scale, 1)); transform-origin: top left; }
+
+#card {
+  width: var(--card-w); height: var(--card-h); position: relative; border-radius: 28px; overflow: hidden;
+  background: radial-gradient(130% 150% at 85% -10%, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 50%), linear-gradient(135deg, var(--bg-color-1) 0%, var(--bg-color-2) 100%);
+  box-shadow: 0 30px 60px -20px rgba(0,0,0,0.4), inset 0 0 0 1px rgba(255,255,255,0.1);
+}
+
+.card-texture { position: absolute; inset: 0; opacity: 0.04; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E"); pointer-events: none; z-index: 1; }
+.card-shine { position: absolute; inset: 0; background: linear-gradient(115deg, transparent 20%, rgba(255,255,255,0.12) 30%, transparent 45%); mix-blend-mode: overlay; pointer-events: none; z-index: 2; }
+
+/* 메탈 IC 칩 */
+.card-chip-group { position: absolute; top: 44px; left: 44px; display: flex; align-items: center; gap: 16px; z-index: 3; }
+.ic-chip {
+  width: 54px; height: 42px; background: linear-gradient(135deg, #d4af37, #fceda1 40%, #c59b27);
+  border-radius: 8px; position: relative; overflow: hidden;
+  box-shadow: inset 0 0 4px rgba(0,0,0,0.5), 0 1px 3px rgba(0,0,0,0.2); border: 1px solid rgba(0,0,0,0.3);
+}
+.chip-line { position: absolute; background: rgba(0,0,0,0.2); }
+.chip-line.v1 { top: 0; bottom: 0; left: 30%; width: 1px; }
+.chip-line.v2 { top: 0; bottom: 0; right: 30%; width: 1px; }
+.chip-line.h1 { left: 0; right: 0; top: 50%; height: 1px; }
+.chip-inner { position: absolute; top: 20%; left: 35%; right: 35%; bottom: 20%; border: 1px solid rgba(0,0,0,0.2); border-radius: 3px; }
+.contactless { width: 26px; height: 26px; color: rgba(255,255,255,0.5); transform: rotate(90deg); }
+
+/* 우측 상단 문구 및 브랜드 타이틀 (텍스트 살짝 확대) */
+.card-brand-top { position: absolute; top: 42px; right: 44px; text-align: right; color: #fff; z-index: 3; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
+.card-brand-top .promo { font-size: 14px; font-weight: 600; letter-spacing: 0.5px; margin-bottom: 6px; color: #d4af37; white-space: nowrap; }
+.card-brand-top .brand { font-family: 'Playfair Display', serif; font-weight: 800; font-size: 34px; line-height: 1.15; letter-spacing: 0.5px; white-space: nowrap; }
+.card-brand-top .brand .script { font-family: 'Alex Brush', cursive; font-size: 30px; font-weight: 400; color: #fceda1; margin-left: 8px; }
+
+/* 카드 정중앙 정렬 프레임 */
+.card-title-wrap { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 4; pointer-events: none; }
+#cardLogo { pointer-events: auto; display: flex; align-items: center; justify-content: center; }
+.card-title { font-family: 'Alex Brush', cursive; font-size: 92px; color: #ffffff; text-shadow: 0 4px 16px rgba(0,0,0,0.4); letter-spacing: 2px; white-space: nowrap; user-select: none; }
+
+/* assets/logo.png 크기/위치는 :root 의 --logo-scale, --logo-x, --logo-y 로 조절 */
+.card-logo-img {
+  max-width: 320px;
+  max-height: 160px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  transform: translate(var(--logo-x), var(--logo-y)) scale(var(--logo-scale));
+  transform-origin: center;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* 드래그 대상 기본 스타일 (사진) */
+.draggable-image { cursor: grab; max-width: 100%; max-height: 100%; object-fit: contain; position: relative; z-index: 10; }
+.draggable-image:active { cursor: grabbing; }
+
+/* 하단 인터랙티브 영역 레이어 */
+.card-bottom { position: absolute; bottom: 44px; left: 44px; right: 44px; display: flex; justify-content: space-between; align-items: flex-end; z-index: 5; }
+.card-bottom-left { display: flex; align-items: center; gap: 24px; }
+
+/* 사진 박스 및 배지 */
+.card-photo-wrap { position: relative; width: 120px; height: 120px; flex-shrink: 0; }
+.card-photo { width: 100%; height: 100%; border-radius: 12px; background: #ececec; border: 3px solid #d4af37; box-shadow: 0 8px 24px rgba(0,0,0,0.5); overflow: hidden; display: flex; align-items: center; justify-content: center; }
+.card-photo img.draggable-image { width: 100%; height: 100%; object-fit: cover; }
+.card-photo .placeholder-icon { width: 46px; height: 46px; color: #a9a9a9; }
+
+.vip-badge {
+  position: absolute; bottom: -12px; left: 50%; transform: translateX(-50%);
+  background: linear-gradient(135deg, #fceda1, #d4af37, #a67c00); color: #1a1a1a;
+  font-family: 'Playfair Display', serif; font-weight: 900; font-size: 13px; letter-spacing: 1.5px;
+  padding: 4px 16px; border-radius: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.4); border: 1px solid #755500; z-index: 15;
+}
+
+/* 신용카드 양각(타각) 텍스트 (살짝 확대, 줄바꿈 방지) */
+.card-user-info { display: flex; flex-direction: column; gap: 12px; color: #fff; }
+.card-user-info .item { display: flex; flex-direction: column; gap: 4px; }
+.card-user-info .label { font-size: 13px; font-weight: 600; opacity: 0.8; letter-spacing: 1px; }
+.emboss-text {
+  font-family: 'Share Tech Mono', monospace; font-size: 29px; letter-spacing: 1.5px; color: #e0e0e0;
+  text-shadow: 1px 1px 0px rgba(255,255,255,0.2), -1px -1px 0px rgba(0,0,0,0.6), 2px 2px 4px rgba(0,0,0,0.5);
+  white-space: nowrap;
+}
+
+/* QR 및 하단 주소 */
+.card-bottom-right { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+.card-qr-wrap { width: 84px; height: 84px; background: #fff; border-radius: 8px; padding: 6px; box-shadow: 0 8px 20px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.card-qr-wrap img { width: 100%; height: 100%; object-fit: contain; }
+.card-url { font-size: 16px; font-weight: 500; color: rgba(255,255,255,0.5); letter-spacing: 0.5px; white-space: nowrap; }
+
+.zoom-controls { display: flex; gap: 12px; align-items: center; color: var(--text-dark); font-size: 13px; font-weight: 600; }
+.zoom-controls button { width: 28px; height: 28px; border-radius: 50%; border: 1.5px solid #d6cfc7; background: #fff; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; }
+.zoom-controls button:hover { background: #f0eae4; border-color: var(--text-dark); }
+
+@media (max-width: 1024px) { .layout { grid-template-columns: 1fr; } .preview-wrap { position: static; } }
