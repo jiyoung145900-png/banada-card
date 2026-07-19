@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const saved = loadData();
 
-  // ---------- 텍스트 입력 연동 ----------
+  // ---------- 텍스트 입력 연동 (대소문자 그대로 표시) ----------
   const coordiInput = $('coordiCode');
   const memberInput = $('memberId');
   const outCoordi = $('outCoordi');
@@ -35,19 +35,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (saved.coordiCode !== undefined) {
     coordiInput.value = saved.coordiCode;
-    outCoordi.textContent = saved.coordiCode.toUpperCase() || '-';
+    outCoordi.textContent = saved.coordiCode || '-';
   }
   if (saved.memberId !== undefined) {
     memberInput.value = saved.memberId;
-    outMemberId.textContent = saved.memberId.toUpperCase() || '-';
+    outMemberId.textContent = saved.memberId || '-';
   }
 
   coordiInput.addEventListener('input', () => {
-    outCoordi.textContent = coordiInput.value.toUpperCase() || '-';
+    outCoordi.textContent = coordiInput.value || '-';
     saveData({ coordiCode: coordiInput.value });
   });
   memberInput.addEventListener('input', () => {
-    outMemberId.textContent = memberInput.value.toUpperCase() || '-';
+    outMemberId.textContent = memberInput.value || '-';
     saveData({ memberId: memberInput.value });
   });
 
@@ -124,7 +124,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (isDragging) {
         isDragging = false;
         imgElement.style.cursor = 'grab';
-        updateTransform(true); // 드래그 끝났을 때 저장
+        updateTransform(true);
       }
     };
 
@@ -184,7 +184,6 @@ document.addEventListener("DOMContentLoaded", () => {
     saveData({ photoDataUrl: null, photoFileName: null, photoTransform: null });
   });
 
-  // 저장된 사진 복원
   if (saved.photoDataUrl) {
     applyPhoto(saved.photoDataUrl, saved.photoFileName, saved.photoTransform);
   }
@@ -203,7 +202,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // 저장된 테마 복원
   if (saved.themeC1 && saved.themeC2) {
     document.documentElement.style.setProperty('--bg-color-1', saved.themeC1);
     document.documentElement.style.setProperty('--bg-color-2', saved.themeC2);
